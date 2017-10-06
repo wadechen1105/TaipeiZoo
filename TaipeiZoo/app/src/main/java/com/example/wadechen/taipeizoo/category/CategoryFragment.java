@@ -1,5 +1,6 @@
 package com.example.wadechen.taipeizoo.category;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,11 +10,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.wadechen.taipeizoo.Animal;
 import com.example.wadechen.taipeizoo.R;
+import com.example.wadechen.taipeizoo.network.NetWorkHelper;
 
-/**
- * Created by wadechen on 2017/10/4.
- */
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.List;
 
 public class CategoryFragment extends Fragment {
     private RecyclerView mRecycleView;
@@ -27,6 +31,7 @@ public class CategoryFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
         return inflater.inflate(R.layout.fragment_gategory, container, false);
     }
 
@@ -34,16 +39,21 @@ public class CategoryFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mRecycleView = view.findViewById(R.id.animal_list_view);
-        mAdapter = new CategoryAdapter();
 
+        mAdapter = new CategoryAdapter(getContext(), mRecycleView);
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecycleView.setLayoutManager(layoutManager);
         mRecycleView.setAdapter(mAdapter);
     }
 
+    public void showView() {
+        mAdapter.reloadData();
+    }
+
     @Override
     public void onStop() {
         super.onStop();
     }
+
 }

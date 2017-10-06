@@ -4,20 +4,22 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
-import android.util.Log;
 
 import com.example.wadechen.taipeizoo.network.NetWorkHelper;
+import com.example.wadechen.taipeizoo.service.Cache;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 
-import static org.mockito.Mockito.*;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Instrumentation test, which will execute on an Android device.
@@ -51,18 +53,20 @@ public class ExampleInstrumentedTest {
 
             @Override
             public void onJSONObject(JSONObject response) {
-                Log.d("onJSONObject", "result : " + response.toString());
+                Cache a = Animal.getAnimalsFromJSONAndSaveToCache(response);
+                assertTrue(a.size() > 0);
                 cdl.countDown();
             }
 
             @Override
-            public void onBitamp(Bitmap response) {
+            public void onBitamp(Bitmap response, String url, Object id) {
 
             }
 
             @Override
             public void onError(int code, String message) {
                 cdl.countDown();
+                assertTrue(false);
             }
         });
 

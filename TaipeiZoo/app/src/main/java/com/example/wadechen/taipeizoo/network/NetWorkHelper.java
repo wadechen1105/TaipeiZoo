@@ -94,14 +94,15 @@ public class NetWorkHelper {
 
         AndroidNetworking.get(url)
                 .setTag(tag)
-                .setPriority(Priority.LOW)
+                .addHeaders("Content-Type", "application/json")
+                .addHeaders("connection", "close")
+                .setPriority(Priority.MEDIUM)
                 .build()
                 .getAsJSONObject(new JSONObjectRequestListener() {
                     @Override
                     public void onResponse(JSONObject response) {
                         // do anything with response
-                        for (OnResponseListener listener :
-                                mList) {
+                        for (OnResponseListener listener : mList) {
                             listener.onJSONObject(response);
                         }
                     }
@@ -117,28 +118,26 @@ public class NetWorkHelper {
                 });
     }
 
-    public void getBitmap(String imageUrl) {
+    public void getBitmap(final String imageUrl,final Object id, int h, int w) {
         AndroidNetworking.get(imageUrl)
                 .setTag("imageRequest")
                 .setPriority(Priority.MEDIUM)
-                .setBitmapMaxHeight(100)
-                .setBitmapMaxWidth(100)
+                .setBitmapMaxHeight(h)
+                .setBitmapMaxWidth(w)
                 .setBitmapConfig(Bitmap.Config.ARGB_8888)
                 .build()
                 .getAsBitmap(new BitmapRequestListener() {
                     @Override
                     public void onResponse(Bitmap bitmap) {
                         // do anything with bitmap
-                        for (OnResponseListener listener :
-                                mList) {
-                            listener.onBitamp(bitmap);
+                        for (OnResponseListener listener : mList) {
+                            listener.onBitamp(bitmap, imageUrl, id);
                         }
                     }
                     @Override
                     public void onError(ANError error) {
                         // handle error
-                        for (OnResponseListener listener :
-                                mList) {
+                        for (OnResponseListener listener : mList) {
                             listener.onError(error.getErrorCode(), error.getMessage());
                         }
                     }
@@ -153,12 +152,23 @@ public class NetWorkHelper {
         AndroidNetworking.cancel(tag);
     }
 
+    public void shutDown() {
+        AndroidNetworking.cancelAll();
+        AndroidNetworking.shutDown();
+    }
+
     public interface OnResponseListener {
         void onJSONArray(JSONArray response);
 
         void onJSONObject(JSONObject response);
 
-        void onBitamp(Bitmap response);
+        /***
+         *
+         * @param response
+         * @param url download url
+         * @param id identifier
+         */
+        void onBitamp(Bitmap response,String url, Object id);
 
         void onError(int code, String message);
     }
