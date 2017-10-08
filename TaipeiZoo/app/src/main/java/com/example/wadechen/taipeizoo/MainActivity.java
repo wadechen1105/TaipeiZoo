@@ -15,8 +15,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Window;
 
+import com.example.wadechen.taipeizoo.about.ContactFragment;
 import com.example.wadechen.taipeizoo.category.CategoryFragment;
+import com.example.wadechen.taipeizoo.introduction.IntroducationFragment;
 import com.example.wadechen.taipeizoo.network.NetWorkHelper;
 import com.example.wadechen.taipeizoo.service.Cache;
 import com.example.wadechen.taipeizoo.service.NetworkService;
@@ -99,23 +102,28 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        findViews();
+        mTabLayout.setupWithViewPager(mViewPager);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        setupViewPager(mViewPager);
+        //start service to downlaod images
+        startService(new Intent(this, NetworkService.class));
+        //bind service to notify dowload progress to UI
+        doBindService();
+    }
 
+    private void findViews() {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
         mTabLayout = (TabLayout) findViewById(R.id.tabs);
-        mTabLayout.setupWithViewPager(mViewPager);
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setupViewPager(mViewPager);
-        startService(new Intent(this, NetworkService.class));
-        doBindService();
     }
 
     private void setupViewPager(ViewPager viewPager) {
         TabPageAdapter adapter = new TabPageAdapter(getSupportFragmentManager());
         adapter.addFragment(mCategoryFragment, getString(R.string.app_category));
-        adapter.addFragment(new CategoryFragment(), getString(R.string.app_intro));
-        adapter.addFragment(new CategoryFragment(), getString(R.string.app_about));
+        adapter.addFragment(new IntroducationFragment(), getString(R.string.app_intro));
+        adapter.addFragment(new ContactFragment(), getString(R.string.app_about));
         viewPager.setAdapter(adapter);
     }
 

@@ -61,4 +61,11 @@ public class ImageProcess {
             return null;
         }
     }
+
+    public boolean isFileExist(String id) {
+        ContextWrapper cw = new ContextWrapper(mContext);
+        File directory = cw.getDir("images", Context.MODE_PRIVATE);
+        File f = new File(directory.getPath(), id + ".png");
+        return f.exists() && f.isFile();
+    }
 }

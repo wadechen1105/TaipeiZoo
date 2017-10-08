@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/zoo_img"
+        android:layout_alignParentTop="true"
+        android:scaleType="fitXY"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_marginBottom="20dp"
+        android:src="@drawable/zoo_cav"/>
+
+    <TextView android:id="@+id/phone_call"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/zoo_img"
+        android:autoLink="phone"
+        android:textSize="18sp"
+        android:drawableStart="@mipmap/phone"
+        android:text="@string/call_us"/>
+
+    <TextView
+        android:id="@+id/mail_us"
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_below="@id/phone_call"
+        android:autoLink="email"
+        android:textSize="18sp"
+        android:drawableStart="@mipmap/mail"
+        android:text="@string/mail_us"/>
+
+</RelativeLayout>

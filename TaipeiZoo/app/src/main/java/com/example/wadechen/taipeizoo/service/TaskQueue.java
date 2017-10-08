@@ -35,14 +35,14 @@ public class TaskQueue<T> {
 
         // If there is no other transmission processing, go do this one!
         synchronized (this) {
-            h.post(new Runnable() {
+            h.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     if (!queueProcessing) {
                         processQueue();
                     }
                 }
-            });
+            },200);
         }
     }
 

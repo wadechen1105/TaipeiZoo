@@ -118,7 +118,7 @@ public class NetWorkHelper {
                 });
     }
 
-    public void getBitmap(final String imageUrl,final Object id, int h, int w) {
+    public void getBitmap(final String imageUrl,final Object id, int w, int h) {
         AndroidNetworking.get(imageUrl)
                 .setTag("imageRequest")
                 .setPriority(Priority.MEDIUM)

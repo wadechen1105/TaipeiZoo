@@ -1,5 +1,7 @@
 package com.example.wadechen.taipeizoo;
 
+import android.graphics.Bitmap;
+
 import com.example.wadechen.taipeizoo.service.Cache;
 
 import org.json.JSONArray;
@@ -37,6 +39,7 @@ public class Animal {
     public String interpretation;
     public String pic1_url;
     public String pic2_url;
+    public Bitmap[] pics = new Bitmap[2];
 
     /**
      * get total count of animals
@@ -76,7 +79,6 @@ public class Animal {
                 a.pic1_url = animal.getString("A_Pic01_URL");
                 a.pic2_url = animal.getString("A_Pic02_URL");
                 cache.addToCache(a);
-                L.d("download --");
             }
 
         } catch (Exception e) {

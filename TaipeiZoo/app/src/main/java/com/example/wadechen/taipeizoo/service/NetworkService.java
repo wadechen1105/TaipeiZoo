@@ -47,6 +47,7 @@ public class NetworkService extends Service implements NetWorkHelper.OnResponseL
     private ServiceHandler mServiceHandler;
     private NetWorkHelper mHelper;
 
+
     @Override
     public void onJSONArray(JSONArray response) {
 
@@ -68,6 +69,8 @@ public class NetworkService extends Service implements NetWorkHelper.OnResponseL
                 Cache cache = Animal.getCache();
                 ImageProcess imageProcess = new ImageProcess(NetworkService.this);
                 Animal a = (Animal) id;
+
+                //save bitmap to local folder
                 if (url.equals(a.pic1_url)) {
                     imageProcess.saveImageToApp(response, String.valueOf(a.mId + "_pic1"));
                 } else if (url.equals(a.pic2_url)) {
@@ -75,7 +78,8 @@ public class NetworkService extends Service implements NetWorkHelper.OnResponseL
                 }
 
                 ++mCount;
-                if (mCount % 10 == 0) {
+                // download 5 items to notify UI
+                if (mCount % 5 == 0) {
                     sendEventToUI(MSG_GET_IMAGE_FILE);
                 } else if (mCount >= cache.getData().size()) {
                     Message m = Message.obtain();
@@ -179,11 +183,8 @@ public class NetworkService extends Service implements NetWorkHelper.OnResponseL
 
     @Override
     public void doSomeThing(Animal item) {
-        List<Animal> list = Animal.getCache().getData();
-        for (Animal animal : list) {
-            mHelper.getBitmap(animal.pic1_url, animal, 200, 300);
-            mHelper.getBitmap(animal.pic2_url, animal, 400, 800);
-        }
+        mHelper.getBitmap(item.pic1_url, item, 256, 192);
+        mHelper.getBitmap(item.pic2_url, item, 256, 192);
     }
 
     private final class ServiceHandler extends Handler {

@@ -2,9 +2,11 @@ package com.example.wadechen.taipeizoo.category;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.support.v7.util.AsyncListUtil;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,11 +33,11 @@ public class CategoryAdapter extends RecyclerView.Adapter {
     private DataCallback mDataCallback;
     private AsyncListUtil<Animal> mListUtil;
 
-    public CategoryAdapter(Context context, RecyclerView recyclerView) {
+    public CategoryAdapter(Context context, RecyclerView recyclerView, Cache<Animal> cache) {
         mContext = context;
         mRecyclerView = recyclerView;
         mImageProcess = new ImageProcess(context);
-        mDataCallback = new DataCallback(Animal.getCache());
+        mDataCallback = new DataCallback(cache);
         mListUtil = new AsyncListUtil(Animal.class, 30, mDataCallback, new ViewCallback(mRecyclerView));
         mScrollListener = new ScrollListener(mListUtil);
         mRecyclerView.addOnScrollListener(mScrollListener);
@@ -53,17 +55,9 @@ public class CategoryAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-//        int key = position + 1;
         Animal a = (Animal) Animal.getCache().getData().get(position);
-//        ViewHolder VH = (ViewHolder) holder;
-        ViewHolder VH = (ViewHolder)holder;
+        ViewHolder VH = (ViewHolder) holder;
         VH.bindView(a);
-        L.d("onBindViewHolder");
-
-//        VH.view.setBackgroundColor(Color.WHITE);
-//        View v = layoutManager.getChildAt(layoutManager.findFirstCompletelyVisibleItemPosition());
-//        if(v != null)
-//        v.setBackgroundColor(Color.CYAN);
     }
 
     @Override
@@ -85,9 +79,9 @@ public class CategoryAdapter extends RecyclerView.Adapter {
 
         ViewHolder(View v) {
             super(v);
-            view =v;
+            view = v;
             textViewName = v.findViewById(R.id.tv_animal_name);
-            textViewLocation =v.findViewById(R.id.tv_animal_location);
+            textViewLocation = v.findViewById(R.id.tv_animal_location);
             imageViewPic1 = v.findViewById(R.id.iv_animal_pic1);
             imageViewPic2 = v.findViewById(R.id.iv_animal_pic2);
         }
@@ -95,12 +89,18 @@ public class CategoryAdapter extends RecyclerView.Adapter {
         void bindView(Animal a) {
             textViewName.setText(mContext.getString(R.string.animal_name, a.name, a.nameEn));
             textViewLocation.setText(a.loaction);
-            Bitmap pic1 = mImageProcess.loadImageFromApp(a.mId+"_pic1");
-            Bitmap pic2 = mImageProcess.loadImageFromApp(a.mId+"_pic2");
-            imageViewPic1.setImageBitmap(pic1);
-            imageViewPic2.setImageBitmap(pic2);
-            L.v("bindView ----");
+            L.d("mid = " + a.mId + " / url = " + a.pic1_url);
+            Bitmap[] bs = a.pics;
+            if (bs[0] != null)
+                imageViewPic1.setImageBitmap(bs[0]);
+            else
+                imageViewPic1.setImageResource(R.mipmap.default_image);
+            if (bs[1] != null)
+                imageViewPic2.setImageBitmap(bs[1]);
+            else
+                imageViewPic2.setImageResource(R.mipmap.default_image);
         }
+
     }
 
     private class DataCallback extends AsyncListUtil.DataCallback<Animal> {
@@ -121,9 +121,12 @@ public class CategoryAdapter extends RecyclerView.Adapter {
             L.v("DataCallback - fillData");
             if (data != null) {
                 List<Animal> l = mCache.getData();
-                for (int i=0 ; i<itemCount; i++) {
-                    data[i] = l.get(i);
-                    L.d("name = "+ l.get(i).name);
+                for (int i = 0; i < itemCount; i++) {
+                    Animal a = l.get(i);
+                    data[i] = a;
+
+                    data[i].pics[0] = mImageProcess.loadImageFromApp(a.mId + "_pic1");
+                    data[i].pics[1] = mImageProcess.loadImageFromApp(a.mId + "_pic2");
                 }
             }
         }
@@ -144,7 +147,7 @@ public class CategoryAdapter extends RecyclerView.Adapter {
                 return;
             }
 
-            LinearLayoutManager llm = (LinearLayoutManager)mView.getLayoutManager();
+            LinearLayoutManager llm = (LinearLayoutManager) mView.getLayoutManager();
             outRange[0] = llm.findFirstVisibleItemPosition();
             outRange[1] = llm.findLastVisibleItemPosition();
 
@@ -169,6 +172,7 @@ public class CategoryAdapter extends RecyclerView.Adapter {
 
     private class ScrollListener extends RecyclerView.OnScrollListener {
         AsyncListUtil<Animal> mListUtil;
+
         ScrollListener(AsyncListUtil<Animal> listUtil) {
             mListUtil = listUtil;
         }

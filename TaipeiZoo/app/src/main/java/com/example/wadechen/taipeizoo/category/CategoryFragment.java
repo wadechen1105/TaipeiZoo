@@ -19,6 +19,9 @@ import org.json.JSONObject;
 
 import java.util.List;
 
+/**
+ * show animal name and images
+ */
 public class CategoryFragment extends Fragment {
     private RecyclerView mRecycleView;
     private CategoryAdapter mAdapter;
@@ -40,7 +43,7 @@ public class CategoryFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         mRecycleView = view.findViewById(R.id.animal_list_view);
 
-        mAdapter = new CategoryAdapter(getContext(), mRecycleView);
+        mAdapter = new CategoryAdapter(getContext(), mRecycleView, Animal.getCache());
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecycleView.setLayoutManager(layoutManager);

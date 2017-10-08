@@ -2,7 +2,24 @@
     <string name="app_name">TaipeiZoo</string>
     <string name="app_category">Category</string>
     <string name="app_intro">Introduction</string>
-    <string name="app_about">About</string>
+    <string name="app_about">Contact Us</string>
+    <string name="call_us">遊客中心電話 : <a href="tel: +886 0229382300">(02)29382300</a></string>
+    <string name="mail_us">電子郵件 : <a href="mailto:zoo.society@msa.hinet.net">zoo.society@msa.hinet.net</a></string>
 
     <string name="animal_name" formatted="false">%s ( %s )</string>
+
+    <string name="intro">臺北市立動物園是中華民國臺北市的一座公立動物園，隸屬於臺北市政府教育局。\n
+        1914年創立於圓山地區，舊稱「圓山動物園」，與兒童樂園（前臺北市立兒童育樂中心）相鄰。\n
+        1986年，因圓山原址無法擴建，而遷至文山區木柵地區，因此成為臺灣人現在熟悉所稱「木柵動物園」。\n
+        搬遷至木柵後的臺北市立動物園，園區總面積原為182公頃，\n
+        隨後因捷運動物園站及北二高的開闢，移撥出部分土地，目前仍有165公頃之廣，其中已開發使用區域近百公頃。\n
+        園內包含8個戶外展示區、6個室內展示館、5個環境教育教學場所，\n
+        2013年底有動物377種、2,783隻（不含昆蟲及動物收容中心動物）。\n
+        整個園區被自然次生林地所圍繞，是一處結合自然景觀形成具生態特色之休閒場所。\n
+        全園最大的特色是展示環境的布置上採用「地理生態展示法」，\n
+        依照動物原先的生存環境加以布置在新的環境內，\n
+        使動物脫離鐵籠的束縛，有自由的活動空間，並創造出與動物原生地最接近的生活環境，\n
+        使動物不必去改變其生活習性，也讓遊客更能了解動物，\n
+        是一座具有教育、研究、保護及娛樂功能的動物園，\n
+        也是全台規模最大的動物園。</string>
 </resources>
